@@ -1,14 +1,9 @@
-package fondue.server.config
+package schokolade.server.config
 
 import java.net.URI
-
 import scala.util.Try
 
 case class Config(dbConfig: DbConfig, appConfig: AppConfig)
-
-//    url <- env("JDBC_DATABASE_URL") // "jdbc:postgresql:fondue"
-//    user <- env("JDBC_DATABASE_USERNAME") // "postgres"
-//    password <- env("JDBC_DATABASE_PASSWORD") // ""
 
 object Config {
 

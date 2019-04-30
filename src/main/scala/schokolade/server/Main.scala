@@ -1,10 +1,10 @@
-package fondue.server
+package schokolade.server
 
 import cats.effect._
 import doobie.hikari.HikariTransactor
 import doobie.util.transactor.Transactor
-import fondue.server.config.{Config, DbConfig}
-import fondue.server.db.Migrations._
+import config.{Config, DbConfig}
+import db.Migrations._
 import org.http4s.implicits._
 import org.http4s._
 import org.http4s.dsl.Http4sDsl

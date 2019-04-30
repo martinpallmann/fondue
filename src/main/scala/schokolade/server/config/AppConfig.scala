@@ -1,3 +1,3 @@
-package fondue.server.config
+package schokolade.server.config
 
 case class AppConfig(port: Int)

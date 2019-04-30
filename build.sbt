@@ -11,11 +11,12 @@ lazy val common = Seq(
   testFrameworks += new TestFramework("minitest.runner.Framework")
 )
 
-lazy val fondue = (project in file("."))
+lazy val schokolade = (project in file("."))
   .settings(
     common,
     libraryDependencies := Dependencies.server,
-    mainClass in (Compile, run) := Some("fondue.server.Main")
+    mainClass in (Compile, run) := Some("schokolade.server.Main")
   )
 
 enablePlugins(JavaAppPackaging)
+

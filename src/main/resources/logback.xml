@@ -6,7 +6,7 @@
     </encoder>
   </appender>
 
-  <logger name="fondue" level="debug"/>
+  <logger name="schokolade" level="debug"/>
 
   <root level="warn">
     <appender-ref ref="STDOUT" />

@@ -1,6 +1,6 @@
-package fondue.server.db
+package schokolade.server.db
 
-import fondue.server.config.DbConfig
+import schokolade.server.config.DbConfig
 import org.flywaydb.core.Flyway
 import scalaz.zio.{Task, ZIO}
 

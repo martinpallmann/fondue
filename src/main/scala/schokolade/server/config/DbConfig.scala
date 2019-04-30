@@ -1,4 +1,4 @@
-package fondue.server.config
+package schokolade.server.config
 
 case class DbConfig(
                    driver: String,
