@@ -42,16 +42,15 @@ object Dependencies {
     private[Dependencies] val tapir        = tapirCore ++ tapirCirce ++ tapirHttp4s ++ tapirOpenApi
     private[Dependencies] val zio          = "org.scalaz" ** ("scalaz-zio", "scalaz-zio-interop-cats") * Versions.zio
 
-    val `api-descriptions`: List[sbt.ModuleID] = List(tapirCore).sbt
+    val `db-migrations`: List[sbt.ModuleID] = List(flyway).sbt
     val server: List[sbt.ModuleID] =
-      List(doobie, flyway, http4s, logback, zio).sbt
+      List(doobie, http4s, logback, zio).sbt
   }
 
   object Test {
     private val minitest     = "io.monix" ** "minitest" * Versions.minitest
     private val minitestLaws = "io.monix" ** "minitest-laws" * Versions.minitest
 
-    val `api-descriptions`: List[sbt.ModuleID] = List(minitest).sbt
     val server: List[sbt.ModuleID]             = List(minitest).sbt
   }
 
@@ -60,9 +59,9 @@ object Dependencies {
 
     val server: List[sbt.ModuleID] = List(postgres).sbt
   }
-
-  val `api-descriptions`: List[ModuleID] =
-    Compile.`api-descriptions` ++ Test.`api-descriptions`.map(_ % sbt.Test)
+  
+  val `db-migrations`: List[ModuleID] =
+    Compile.`db-migrations`
 
   val server: List[sbt.ModuleID] =
     Compile.server ++ Test.server.map(_ % sbt.Test) ++ Runtime.server.map(

@@ -3,8 +3,7 @@ package schokolade.server
 import cats.effect._
 import doobie.hikari.HikariTransactor
 import doobie.util.transactor.Transactor
-import config.{Config, DbConfig}
-import db.Migrations._
+import config.Config
 import org.http4s.implicits._
 import org.http4s._
 import org.http4s.dsl.Http4sDsl
@@ -27,6 +26,7 @@ object Main extends App {
 
   val dsl: Http4sDsl[AppTask] = Http4sDsl[AppTask]
   import dsl._
+  import schokolade.config.db.DbConfig
 
   def service: HttpRoutes[AppTask] = HttpRoutes.of[AppTask] {
     case GET -> Root => Ok("ok")
@@ -35,7 +35,6 @@ object Main extends App {
   override def run(args: List[String]): ZIO[Environment, Nothing, Int] =
     (for {
       cfg        <- ZIO.fromEither(Config.load)
-      _          <- initDb(cfg.dbConfig)
       blockingEC <- blockingExecutor
       transactorR = mkTransactor(
         cfg.dbConfig,

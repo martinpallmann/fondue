@@ -10,7 +10,19 @@ lazy val common = Seq(
   testFrameworks += new TestFramework("minitest.runner.Framework")
 )
 
+lazy val `config-db` = project
+  .settings(common)
+
+lazy val `db-migrations` = project
+  .dependsOn(`config-db`)
+  .settings(
+    common, 
+    libraryDependencies := Dependencies.`db-migrations`,
+    mainClass in (Compile, run) := Some("schokolade.db.migrations.Main")
+  )
+
 lazy val server = project
+  .dependsOn(`config-db`)
   .settings(
     common,
     libraryDependencies := Dependencies.server,
