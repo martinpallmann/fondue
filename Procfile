@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/schokolade
+web: server/target/universal/stage/bin/server

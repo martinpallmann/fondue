@@ -11,7 +11,7 @@ lazy val common = Seq(
   testFrameworks += new TestFramework("minitest.runner.Framework")
 )
 
-lazy val schokolade = (project in file("."))
+lazy val server = project
   .settings(
     common,
     libraryDependencies := Dependencies.server,
