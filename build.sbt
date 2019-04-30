@@ -1,10 +1,9 @@
-ThisBuild / scalaVersion     := "2.12.8"
-ThisBuild / version          := "0"
-ThisBuild / organization     := "io.github.martinpallmann"
+ThisBuild / scalaVersion := "2.12.8"
+ThisBuild / version := "0"
+ThisBuild / organization := "io.github.martinpallmann"
 ThisBuild / organizationName := "Martin Pallmann"
 
 cancelable in Global := true
-
 
 lazy val common = Seq(
   scalacOptions ++= ScalacOptions(),
@@ -19,4 +18,3 @@ lazy val server = project
   )
 
 enablePlugins(JavaAppPackaging)
-
