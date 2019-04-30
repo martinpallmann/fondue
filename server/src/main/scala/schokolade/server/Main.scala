@@ -23,7 +23,7 @@ import scala.concurrent.ExecutionContext
 object Main extends App {
 
   type AppEnvironment = Clock with Console with Blocking
-  type AppTask[A] = TaskR[AppEnvironment, A]
+  type AppTask[A]     = TaskR[AppEnvironment, A]
 
   val dsl: Http4sDsl[AppTask] = Http4sDsl[AppTask]
   import dsl._
@@ -37,7 +37,11 @@ object Main extends App {
       cfg        <- ZIO.fromEither(Config.load)
       _          <- initDb(cfg.dbConfig)
       blockingEC <- blockingExecutor
-      transactorR = mkTransactor(cfg.dbConfig, Platform.executor.asEC, blockingEC)
+      transactorR = mkTransactor(
+        cfg.dbConfig,
+        Platform.executor.asEC,
+        blockingEC
+      )
       httpApp = Router[AppTask]("/" -> service).orNotFound
       server = ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
         BlazeServerBuilder[AppTask]
@@ -52,22 +56,24 @@ object Main extends App {
           new Clock with Console with Blocking {
 //            override protected def xa: doobie.Transactor[Task] = transactor
             override val scheduler: Scheduler.Service[Any] = base.scheduler
-            override val console: Console.Service[Any] = base.console
-            override val clock: Clock.Service[Any] = base.clock
-            override val blocking: Blocking.Service[Any] = base.blocking
+            override val console: Console.Service[Any]     = base.console
+            override val clock: Clock.Service[Any]         = base.clock
+            override val blocking: Blocking.Service[Any]   = base.blocking
           }
         }
       }
     } yield program)
-      .foldM({
-        case e: Throwable => for {
-          _ <- putStrLn(s"Execution failed with: $e")
-          _ = e.printStackTrace()
-          s <- ZIO.succeed(1)
-        } yield s
-        case e =>
-          putStrLn(s"Execution failed with: $e") *> ZIO.succeed(1)
-      },
+      .foldM(
+        {
+          case e: Throwable =>
+            for {
+              _ <- putStrLn(s"Execution failed with: $e")
+              _ = e.printStackTrace()
+              s <- ZIO.succeed(1)
+            } yield s
+          case e =>
+            putStrLn(s"Execution failed with: $e") *> ZIO.succeed(1)
+        },
         _ => ZIO.succeed(0)
       )
 
@@ -78,23 +84,23 @@ object Main extends App {
       .map(_.asEC)
 
   def mkTransactor(
-                    cfg: DbConfig,
-                    connectEC: ExecutionContext,
-                    transactEC: ExecutionContext
-                  ): Managed[Throwable, Transactor[Task]] = {
+      cfg: DbConfig,
+      connectEC: ExecutionContext,
+      transactEC: ExecutionContext
+  ): Managed[Throwable, Transactor[Task]] = {
     val xa = HikariTransactor.newHikariTransactor[Task](
       cfg.driver,
       cfg.url,
       cfg.user,
       cfg.password,
       connectEC,
-      transactEC)
+      transactEC
+    )
 
-    val res = xa
-      .allocated
-      .map { case (transactor, cleanupM) =>
+    val res = xa.allocated.map {
+      case (transactor, cleanupM) =>
         Reservation(ZIO.succeed(transactor), cleanupM.orDie)
-      }.uninterruptible
+    }.uninterruptible
 
     Managed(res)
   }
