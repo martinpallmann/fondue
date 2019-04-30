@@ -1,4 +1,3 @@
-import Dependencies.Compile._
 import sbt._
 
 object Dependencies {
@@ -12,6 +11,7 @@ object Dependencies {
     val logback   = "1.2.3"
     val minitest  = "2.3.2"
     val mouse     = "0.20"
+    val postgres  = "42.2.5"
     val quicklens = "1.4.12"
     val scalatags = "0.6.8"
     val scalaUri  = "1.4.5"
@@ -49,24 +49,26 @@ object Dependencies {
 
   object Test {
     private val minitest     = "io.monix" ** "minitest" * Versions.minitest
-    private val minitestLaws = "io.monix" ** "minitest-laws" * Versions.minitest
+//    private val minitestLaws = "io.monix" ** "minitest-laws" * Versions.minitest
 
-    val server: List[sbt.ModuleID]             = List(minitest).sbt
+    val server: List[sbt.ModuleID] = 
+      List(minitest).sbt.map(_ % sbt.Test)
   }
 
   object Runtime {
-    private val postgres = "org.tpolecat" ** "doobie-postgres" * Versions.doobie
-
-    val server: List[sbt.ModuleID] = List(postgres).sbt
+    private val doobiePostgres = "org.tpolecat" ** "doobie-postgres" * Versions.doobie
+    private val postgres     = "org.postgresql" * "postgresql" * Versions.postgres
+    val server: List[sbt.ModuleID] = 
+      List(doobiePostgres).sbt.map(_ % sbt.Runtime)
+    val `db-migrations`: List[sbt.ModuleID] = 
+      List(postgres).sbt.map(_ % sbt.Runtime)
   }
   
   val `db-migrations`: List[ModuleID] =
-    Compile.`db-migrations`
+    Compile.`db-migrations` ++ Runtime.`db-migrations`
 
   val server: List[sbt.ModuleID] =
-    Compile.server ++ Test.server.map(_ % sbt.Test) ++ Runtime.server.map(
-      _                                 % sbt.Runtime
-    )
+    Compile.server ++ Test.server ++ Runtime.server
 
   implicit class StringOps(g: String) {
     def *(as: String*): Artifacts  = Artifacts(g, as.toList, isScala = false)
