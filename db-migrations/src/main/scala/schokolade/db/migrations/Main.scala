@@ -5,8 +5,20 @@ object Main {
   import schokolade.config.db.DbConfig
 
   def main(args: Array[String]): Unit = {
-    val migrations = loadDbConfig.flatMap(migrate).get
-    println(s"migrated $migrations migration(s).")
+    import org.flywaydb.core.api.logging.{Log, LogFactory}
+    LogFactory.setLogCreator((c: Class[_]) =>
+    new Log {
+      def isDebugEnabled: Boolean      = false
+      def debug(message: String): Unit = ()
+      def info(message: String): Unit  = if (c.getSimpleName != "DatabaseFactory") println(message)
+      def warn(message: String): Unit  = println(s"WARN  $message")
+      def error(message: String): Unit = println(s"ERROR $message")
+      def error(message: String, e: Exception): Unit = {
+        println(s"ERROR $message")
+        e.printStackTrace()
+      }
+  })
+    loadDbConfig.flatMap(migrate).get
   }
 
   def toTry[A](e: Either[String, A]): Try[A] =
@@ -21,7 +33,7 @@ object Main {
       dbCfg <- toTry(DbConfig.postgres(dbUrl))
     } yield dbCfg
 
-  def migrate(cfg: DbConfig): Try[Int] =
+  def migrate(cfg: DbConfig): Try[Unit] =
     Try {
       import org.flywaydb.core.Flyway
       val fw = Flyway
@@ -29,5 +41,6 @@ object Main {
         .dataSource(cfg.url, cfg.user, cfg.password)
         .load()
       fw.migrate()
+      ()
     }
 }
