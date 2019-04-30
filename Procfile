@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/fondue
+web: target/universal/stage/bin/schokolade
