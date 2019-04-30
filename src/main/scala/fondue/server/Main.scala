@@ -41,7 +41,7 @@ object Main extends App {
       httpApp = Router[AppTask]("/" -> service).orNotFound
       server = ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
         BlazeServerBuilder[AppTask]
-          .bindHttp(9000, "0.0.0.0")
+          .bindHttp(cfg.appConfig.port, "0.0.0.0")
           .withHttpApp(CORS(httpApp))
           .serve
           .compile[AppTask, AppTask, ExitCode]

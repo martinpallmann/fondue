@@ -3,5 +3,5 @@ CREATE TABLE tournaments (
     secret VARCHAR NOT NULL,
     date   TIMESTAMP WITH TIME ZONE NOT NULL,
     name   VARCHAR,
-    PRIMARY KEY(id),
+    PRIMARY KEY(id)
 );
