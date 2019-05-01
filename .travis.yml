@@ -1,0 +1,6 @@
+language: scala
+jdk: openjdk11
+scala:
+  - 2.12.2
+script:
+  - sbt -jvm-opts .jvmopts test
