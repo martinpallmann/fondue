@@ -23,3 +23,5 @@ jobs:
       script: sbt update updateClassifiers updateSbtClassifiers
     - stage: test
       script: sbt coverage test coverageAggregate
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
