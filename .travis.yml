@@ -5,4 +5,4 @@ scala:
 jobs:
   include:
     - stage: test
-      script: sbt -jvm-opts .jvmopts -sbt-opts .sbtopts test < /dev/null
+      script: sbt coverage test
