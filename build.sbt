@@ -6,6 +6,7 @@ ThisBuild / organizationName := "Martin Pallmann"
 cancelable in Global := true
 
 lazy val common = Seq(
+  coursierVerbosity := -1,
   scalacOptions ++= ScalacOptions(),
   testFrameworks += new TestFramework("minitest.runner.Framework")
 )
@@ -30,3 +31,4 @@ lazy val server = project
   )
 
 enablePlugins(JavaAppPackaging)
+coursierVerbosity := -1
