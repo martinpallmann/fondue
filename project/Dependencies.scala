@@ -42,7 +42,7 @@ object Dependencies {
     private[Dependencies] val tapir        = tapirCore ++ tapirCirce ++ tapirHttp4s ++ tapirOpenApi
     private[Dependencies] val zio          = "org.scalaz" ** ("scalaz-zio", "scalaz-zio-interop-cats") * Versions.zio
 
-    val `db-migrations`: List[sbt.ModuleID] = List(flyway).sbt
+    val `db-migrations`: List[sbt.ModuleID] = List(flyway, logback).sbt
     val server: List[sbt.ModuleID] =
       List(doobie, http4s, logback, zio).sbt
   }

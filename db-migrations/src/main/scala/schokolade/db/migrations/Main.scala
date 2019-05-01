@@ -3,21 +3,10 @@ package schokolade.db.migrations
 object Main {
   import scala.util.{Failure, Success, Try}
   import schokolade.config.db.DbConfig
+  import schokolade.db.migrations.logging.Logging
 
   def main(args: Array[String]): Unit = {
-    import org.flywaydb.core.api.logging.{Log, LogFactory}
-    LogFactory.setLogCreator((c: Class[_]) =>
-    new Log {
-      def isDebugEnabled: Boolean      = false
-      def debug(message: String): Unit = ()
-      def info(message: String): Unit  = if (c.getSimpleName != "DatabaseFactory") println(message)
-      def warn(message: String): Unit  = println(s"WARN  $message")
-      def error(message: String): Unit = println(s"ERROR $message")
-      def error(message: String, e: Exception): Unit = {
-        println(s"ERROR $message")
-        e.printStackTrace()
-      }
-  })
+    Logging.configure()
     loadDbConfig.flatMap(migrate).get
   }
 

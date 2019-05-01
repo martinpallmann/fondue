@@ -4,5 +4,7 @@ scala:
   - 2.12.2
 jobs:
   include:
+    - stage: update
+      script: sbt update updateClassifiers updateSbtClassifiers
     - stage: test
-      script: sbt coverage test
+      script: sbt coverage test coverageAggregate
