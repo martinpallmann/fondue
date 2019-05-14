@@ -6,6 +6,7 @@ ThisBuild / organizationName := "Martin Pallmann"
 cancelable in Global := true
 
 lazy val common = Seq(
+  exportJars := true,
   scalacOptions ++= ScalacOptions(),
   testFrameworks += new TestFramework("minitest.runner.Framework")
 )
@@ -14,6 +15,7 @@ lazy val `config-db` = project
   .settings(common)
 
 lazy val `db-migrations` = project
+  .enablePlugins(JavaAppPackaging)
   .dependsOn(`config-db`)
   .settings(
     common, 
@@ -22,11 +24,12 @@ lazy val `db-migrations` = project
   )
 
 lazy val server = project
+  .enablePlugins(JavaAppPackaging)
   .dependsOn(`config-db`)
   .settings(
     common,
     libraryDependencies ++= Dependencies.server,
     mainClass in (Compile, run) := Some("fondue.server.Main")
-  )
+)
 
 enablePlugins(JavaAppPackaging)
