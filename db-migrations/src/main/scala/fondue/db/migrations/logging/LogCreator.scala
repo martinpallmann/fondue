@@ -1,4 +1,4 @@
-package schokolade.db.migrations.logging
+package fondue.db.migrations.logging
 
 import org.flywaydb.core.api.logging.{ LogCreator => FlywayLogCreator }
 import org.flywaydb.core.api.logging.{ Log => FlywayLog }

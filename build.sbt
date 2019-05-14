@@ -18,7 +18,7 @@ lazy val `db-migrations` = project
   .settings(
     common, 
     libraryDependencies ++= Dependencies.`db-migrations`,
-    mainClass in (Compile, run) := Some("schokolade.db.migrations.Main")
+    mainClass in (Compile, run) := Some("fondue.db.migrations.Main")
   )
 
 lazy val server = project
@@ -26,7 +26,7 @@ lazy val server = project
   .settings(
     common,
     libraryDependencies ++= Dependencies.server,
-    mainClass in (Compile, run) := Some("schokolade.server.Main")
+    mainClass in (Compile, run) := Some("fondue.server.Main")
   )
 
 enablePlugins(JavaAppPackaging)

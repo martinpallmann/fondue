@@ -1,4 +1,4 @@
-package schokolade.server
+package fondue.server
 
 import cats.effect._
 import doobie.hikari.HikariTransactor
@@ -26,7 +26,7 @@ object Main extends App {
 
   val dsl: Http4sDsl[AppTask] = Http4sDsl[AppTask]
   import dsl._
-  import schokolade.config.db.DbConfig
+  import fondue.config.db.DbConfig
 
   def service: HttpRoutes[AppTask] = HttpRoutes.of[AppTask] {
     case GET -> Root => Ok("ok")

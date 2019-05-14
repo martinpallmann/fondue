@@ -1,9 +1,9 @@
-package schokolade.db.migrations
+package fondue.db.migrations
 
 object Main {
   import scala.util.{Failure, Success, Try}
-  import schokolade.config.db.DbConfig
-  import schokolade.db.migrations.logging.Logging
+  import fondue.config.db.DbConfig
+  import fondue.db.migrations.logging.Logging
 
   def main(args: Array[String]): Unit = {
     Logging.configure()

@@ -1,7 +1,7 @@
-package schokolade.server.config
+package fondue.server.config
 
 import scala.util.Try
-import schokolade.config.db.DbConfig
+import fondue.config.db.DbConfig
 
 case class Config(dbConfig: DbConfig, appConfig: AppConfig)
 

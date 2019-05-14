@@ -1,4 +1,4 @@
-package schokolade.config.db
+package fondue.config.db
 
 final case class DbConfig(
                            driver: String,
@@ -7,8 +7,9 @@ final case class DbConfig(
                            password: String)
 
 object DbConfig {
-  import scala.util.Try
   import java.net.URI
+
+  import scala.util.Try
 
   def postgres(dbUrl: String): Either[String, DbConfig] =
     for {
